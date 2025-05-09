@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAMEHUB | Каталог</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <button id="theme-toggle" class="theme-btn">🌓</button>
+    <div class="logo">GAMEHUB</div>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="cart.html" class="cart-btn">Корзина (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <section class="filters">
+    <h2>Фильтры</h2>
+    <div class="filter-options">
+        <div class="filters">
+            <select id="genre-filter" onchange="filterGames()">
+              <option value="all">Все жанры</option>
+              <option value="action">Экшен</option>
+              <option value="rpg">RPG</option>
+              <option value="shooter">Шутеры</option>
+            </select>
+            
+            <select id="platform-filter" onchange="filterGames()">
+              <option value="all">Все платформы</option>
+              <option value="pc">PC</option>
+              <option value="ps5">PS5</option>
+              <option value="xbox">Xbox</option>
+            </select>
+          </div>
+  </section>
+
+  <section class="games-grid" id="games-container"></section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
