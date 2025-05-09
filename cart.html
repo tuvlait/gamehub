@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAMEHUB | Корзина</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <button id="theme-toggle" class="theme-btn">🌓</button>
+    <div class="logo">GAMEHUB</div>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">каталог</a>
+      <a href="cart.html" class="cart-btn">Корзина (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <section class="cart">
+    <h2>Ваша корзина</h2>
+    <div id="cart-items">
+      <!-- Тут будут появляться игры -->
+    </div>
+    <div class="cart-total">
+      <p>Итого: <span id="total-price">0</span> ₽</p>
+      <button id="checkout-btn">Оформить заказ</button>
+    </div>
+    <div id="checkout-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Оформление заказа</h2>
+          
+          <form id="order-form">
+            <div class="form-group">
+              <label>Имя и фамилия*</label>
+              <input type="text" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Email*</label>
+              <input type="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Телефон*</label>
+              <input type="tel" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Способ оплаты*</label>
+              <select required>
+                <option value="">Выберите способ</option>
+                <option value="card">Кредитная карта</option>
+                <option value="paypal">PayPal</option>
+                <option value="crypto">Криптовалюта</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Комментарий к заказу</label>
+              <textarea rows="3"></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">Подтвердить заказ</button>
+          </form>
+        </div>
+      </div>
+      
+      <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+          <div class="success-icon">✓</div>
+          <h2>Заказ оформлен!</h2>
+          <p>Номер вашего заказа: <strong>#<span id="order-number"></span></strong></p>
+          <p>Детали отправлены на ваш email</p>
+          <button class="back-to-shop">Вернуться в магазин</button>
+        </div>
+      </div>
+  </section>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartContainer = document.getElementById('cart-items');
+      const totalPriceElement = document.getElementById('total-price');
+  
+      // Показываем игры в корзине
+      function renderCart() {
+        if (cart.length === 0) {
+          cartContainer.innerHTML = '<p>Корзина пуста</p>';
+          totalPriceElement.textContent = '0';
+          return;
+        }
+  
+        cartContainer.innerHTML = cart.map(game => `
+          <div class="cart-item">
+            <img src="${game.image}" width="60" height="60" alt="${game.title}">
+            <div>
+              <h3>${game.title}</h3>
+              <p>${game.price} ₽</p>
+              <button onclick="removeFromCart(${game.id})">Удалить</button>
+            </div>
+          </div>
+        `).join('');
+  
+        // Считаем общую сумму
+        const total = cart.reduce((sum, game) => sum + game.price, 0);
+        totalPriceElement.textContent = total;
+      }
+  
+      // Функция удаления из корзины
+      window.removeFromCart = function(gameId) {
+        const index = cart.findIndex(item => item.id === gameId);
+        if (index !== -1) {
+          cart.splice(index, 1);
+          localStorage.setItem('cart', JSON.stringify(cart));
+          renderCart();
+        }
+      };
+  
+      renderCart();
+    });
+  </script>
+
+  
+  <div id="order-success" class="hidden">
+    <h2>Заказ оформлен!</h2>
+    <p>Номер вашего заказа: <span id="order-number"></span></p>
+    <p>Мы отправили детали на вашу почту</p>
+    <a href="index.html" class="back-to-shop">Вернуться в магазин</a>
+  </div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
