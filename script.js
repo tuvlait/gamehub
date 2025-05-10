@@ -4,7 +4,9 @@ const games = [
     { id: 2, title: "Elden Ring", price: 2499, platform: "ps5", genre: "action", image: "img/elden-ring.jpg" },
     { id: 3, title: "The Witcher 3", price: 999, platform: "pc", genre: "rpg", image: "img/witcher.jpg" },
     { id: 4, title: "Call of Duty: Warzone", price: 0, platform: "xbox", genre: "shooter", image: "img/warzone.jpg" },
-    { id: 5, title: "Hollow Knight", price: 499, platform: "pc", genre: "indie", image: "img/hollow-knight.jpg" }
+    { id: 5, title: "Hollow Knight", price: 499, platform: "pc", genre: "indie", image: "img/hollow-knight.jpg" },
+    { id: 6, title: "Hogwarts Legacy", price: 3799, platform: "PC, PS5, Xbox", genre: "adventure", image: "img/hogwarts-legacy.webp", isNew: true },
+    { id: 7, title: "Starfield", price: 4299, platform: "PC, Xbox", genre: "rpg", image: "img/starfield.webp",  isTop: true }
   ];
   
   // 🛒 Корзина
@@ -44,8 +46,8 @@ const games = [
   }
   
   // 🎮 Рендер игр с фильтрами
-  function renderGames(filterGenre = 'all', filterPlatform = 'all') {
-    const container = document.getElementById('games-container') || document.getElementById('featured-games');
+  function renderGames(gamesToShow = games) {
+    const container = document.getElementById('games-container');
     if (!container) return;
   
     const filteredGames = games.filter(game => {
@@ -54,18 +56,26 @@ const games = [
       return genreMatch && platformMatch;
     });
   
-    container.innerHTML = filteredGames.map(game => `
-      <div class="game-card">
-        <img src="${game.image}" alt="${game.title}">
-        <div class="game-info">
-          <h3 class="game-title">${game.title}</h3>
-          <p>${game.platform.toUpperCase()}</p>
-          <p class="game-price">${game.price === 0 ? 'Бесплатно' : game.price + ' ₽'}</p>
-          <button class="add-to-cart" onclick="addToCart(${game.id})">В корзину</button>
+    container.innerHTML = gamesToShow.map(game => `
+        <div class="game-card" data-id="${game.id}">
+          ${game.isNew ? '<div class="game-badge new">Новинка</div>' : ''}
+          ${game.isTop ? '<div class="game-badge top">Топ продаж</div>' : ''}
+          <img src="${game.image}" 
+               alt="${game.title}" 
+               loading="lazy"
+               width="300"
+               height="170">
+          <div class="game-info">
+            <h3>${game.title}</h3>
+            <div class="game-meta">
+              <span class="game-platform">${game.platform}</span>
+              <span class="game-price">${game.price.toLocaleString()} ₽</span>
+            </div>
+            <button class="btn add-to-cart">В корзину</button>
+          </div>
         </div>
-      </div>
-    `).join('');
-  }
+      `).join('');
+    }
   
   // 🛒 Рендер корзины
   function renderCart() {
@@ -270,3 +280,19 @@ function validateEmail(email) {
   function validatePhone(phone) {
     return phone.length >= 10;
   }
+  
+  // Фильтрация игр
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      let filteredGames = games;
+      
+      if (filter === 'new') {
+        filteredGames = games.filter(game => game.isNew);
+      } else if (filter === 'top') {
+        filteredGames = games.filter(game => game.isTop);
+      }
+      
+      renderGames(filteredGames);
+    });
+  });
