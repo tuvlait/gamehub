@@ -5,14 +5,108 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GAMEHUB | Корзина</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Добавляем только необходимые стили для модальных окон */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background: #1a1a2e;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+    }
+    
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #2a2a3a;
+      background: #0f0f1a;
+      color: #e0e0ff;
+    }
+    
+    .submit-btn {
+      background: #6e42e5;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .submit-btn:hover {
+      background: #8a63f2;
+    }
+    
+    .success-icon {
+      font-size: 60px;
+      color: #4caf50;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .back-to-shop {
+      background: #6e42e5;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 20px;
+      text-align: center;
+      display: block;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <button id="theme-toggle" class="theme-btn">🌓</button>
     <div class="logo">GAMEHUB</div>
     <nav>
       <a href="index.html">Главная</a>
-      <a href="catalog.html">каталог</a>
+      <a href="catalog.html">Каталог</a>
       <a href="cart.html" class="cart-btn">Корзина (<span id="cart-count">0</span>)</a>
     </nav>
   </header>
@@ -26,72 +120,81 @@
       <p>Итого: <span id="total-price">0</span> ₽</p>
       <button id="checkout-btn">Оформить заказ</button>
     </div>
-    <div id="checkout-modal" class="modal hidden">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>Оформление заказа</h2>
-          
-          <form id="order-form">
-            <div class="form-group">
-              <label>Имя и фамилия*</label>
-              <input type="text" required>
-            </div>
-            
-            <div class="form-group">
-              <label>Email*</label>
-              <input type="email" required>
-            </div>
-            
-            <div class="form-group">
-              <label>Телефон*</label>
-              <input type="tel" required>
-            </div>
-            
-            <div class="form-group">
-              <label>Способ оплаты*</label>
-              <select required>
-                <option value="">Выберите способ</option>
-                <option value="card">Кредитная карта</option>
-                <option value="paypal">PayPal</option>
-                <option value="crypto">Криптовалюта</option>
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label>Комментарий к заказу</label>
-              <textarea rows="3"></textarea>
-            </div>
-            
-            <button type="submit" class="submit-btn">Подтвердить заказ</button>
-          </form>
-        </div>
-      </div>
-      
-      <div id="success-modal" class="modal hidden">
-        <div class="modal-content">
-          <div class="success-icon">✓</div>
-          <h2>Заказ оформлен!</h2>
-          <p>Номер вашего заказа: <strong>#<span id="order-number"></span></strong></p>
-          <p>Детали отправлены на ваш email</p>
-          <button class="back-to-shop">Вернуться в магазин</button>
-        </div>
-      </div>
   </section>
+
+  <!-- Модальное окно оформления заказа -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Оформление заказа</h2>
+      <form id="order-form">
+        <div class="form-group">
+          <label>Имя и фамилия*</label>
+          <input type="text" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Email*</label>
+          <input type="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Телефон*</label>
+          <input type="tel" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Способ оплаты*</label>
+          <select required>
+            <option value="">Выберите способ</option>
+            <option value="card">Кредитная карта</option>
+            <option value="paypal">PayPal</option>
+            <option value="crypto">Криптовалюта</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Комментарий к заказу</label>
+          <textarea rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Подтвердить заказ</button>
+      </form>
+    </div>
+  </div>
   
+  <!-- Модальное окно успешного оформления -->
+  <div id="success-modal" class="modal">
+    <div class="modal-content">
+      <div class="success-icon">✓</div>
+      <h2>Заказ оформлен!</h2>
+      <p>Номер вашего заказа: <strong>#<span id="order-number"></span></strong></p>
+      <p>Детали отправлены на ваш email</p>
+      <button class="back-to-shop">Вернуться в магазин</button>
+    </div>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const cartContainer = document.getElementById('cart-items');
       const totalPriceElement = document.getElementById('total-price');
-  
+      const checkoutBtn = document.getElementById('checkout-btn');
+      const checkoutModal = document.getElementById('checkout-modal');
+      const successModal = document.getElementById('success-modal');
+      const closeButtons = document.querySelectorAll('.close');
+      const orderForm = document.getElementById('order-form');
+      const backToShopBtn = document.querySelector('.back-to-shop');
+
       // Показываем игры в корзине
       function renderCart() {
         if (cart.length === 0) {
           cartContainer.innerHTML = '<p>Корзина пуста</p>';
           totalPriceElement.textContent = '0';
+          checkoutBtn.disabled = true;
           return;
         }
-  
+
         cartContainer.innerHTML = cart.map(game => `
           <div class="cart-item">
             <img src="${game.image}" width="60" height="60" alt="${game.title}">
@@ -102,12 +205,12 @@
             </div>
           </div>
         `).join('');
-  
-        // Считаем общую сумму
+
         const total = cart.reduce((sum, game) => sum + game.price, 0);
         totalPriceElement.textContent = total;
+        checkoutBtn.disabled = false;
       }
-  
+
       // Функция удаления из корзины
       window.removeFromCart = function(gameId) {
         const index = cart.findIndex(item => item.id === gameId);
@@ -115,22 +218,66 @@
           cart.splice(index, 1);
           localStorage.setItem('cart', JSON.stringify(cart));
           renderCart();
+          updateCartCount();
         }
       };
-  
+
+      // Обновление счетчика корзины
+      function updateCartCount() {
+        document.getElementById('cart-count').textContent = cart.length;
+      }
+
+      // Открытие модального окна
+      checkoutBtn.addEventListener('click', function() {
+        checkoutModal.classList.add('active');
+      });
+
+      // Закрытие модальных окон
+      function closeModals() {
+        checkoutModal.classList.remove('active');
+        successModal.classList.remove('active');
+      }
+
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', closeModals);
+      });
+
+      // Обработка формы заказа
+      orderForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Здесь должна быть логика отправки данных
+        // Генерируем случайный номер заказа
+        const orderNumber = Math.floor(Math.random() * 1000000);
+        document.getElementById('order-number').textContent = orderNumber;
+        
+        // Показываем окно успеха
+        checkoutModal.classList.remove('active');
+        successModal.classList.add('active');
+        
+        // Очищаем корзину
+        localStorage.removeItem('cart');
+        cart.length = 0;
+        renderCart();
+        updateCartCount();
+      });
+
+      // Возврат в магазин
+      backToShopBtn.addEventListener('click', function() {
+        closeModals();
+        window.location.href = 'index.html';
+      });
+
+      // Закрытие по клику вне окна
+      window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+          closeModals();
+        }
+      });
+
       renderCart();
+      updateCartCount();
     });
   </script>
-
-  
-  <div id="order-success" class="hidden">
-    <h2>Заказ оформлен!</h2>
-    <p>Номер вашего заказа: <span id="order-number"></span></p>
-    <p>Мы отправили детали на вашу почту</p>
-    <a href="index.html" class="back-to-shop">Вернуться в магазин</a>
-  </div>
-
-  <script src="js/storage.js"></script>
-  <script src="js/script.js"></script>
 </body>
 </html>
