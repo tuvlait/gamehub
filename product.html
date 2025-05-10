@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAMEHUB | Корзина</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GAMEHUB | Страница товара</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <button id="theme-toggle" class="theme-btn">🌓</button>
-        <div class="logo">GAMEHUB</div>
-        <nav>
-          <a href="index.html">Главная</a>
-          <a href="catalog.html">каталог</a>
-          <a href="cart.html" class="cart-btn">Корзина (<span id="cart-count">0</span>)</a>
-        </nav>
-      </header>
+  <header>
+    <div class="logo">GAMEHUB</div>
+    <nav>
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="cart.html" class="cart-btn">Корзина (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
 
   <main class="product-page">
     <div class="product-gallery">
       <div class="main-image">
         <img id="main-image" src="" alt="Основное изображение">
       </div>
-      <div class="thumbnails"></div>
     </div>
     
     <div class="product-info">
       <h1 id="product-title"></h1>
       <div class="rating">
-        <div class="stars"></div>
-        <span class="reviews-count"></span>
+        <div class="stars">★★★★★</div>
+        <span class="reviews-count">(12 отзывов)</span>
       </div>
       
       <div class="price-block">
-        <span id="product-price"></span>
+        <span id="product-price" class="current-price"></span>
         <span id="product-old-price" class="old-price"></span>
       </div>
       
-      <button class="buy-btn">Купить сейчас</button>
-      <button class="add-to-cart-btn">Добавить в корзину</button>
+      <button class="btn buy-btn">Купить сейчас</button>
+      <button class="btn add-to-cart-btn">Добавить в корзину</button>
       
-      <div class="platforms"></div>
+      <div class="platforms">
+        <h3>Платформы</h3>
+        <div id="platforms-list"></div>
+      </div>
       
       <div class="description">
         <h3>Описание</h3>
@@ -49,25 +50,32 @@
       
       <div class="requirements">
         <h3>Системные требования</h3>
-        <div class="requirements-grid"></div>
+        <div class="requirements-grid" id="requirements-grid"></div>
       </div>
     </div>
     
     <div class="reviews-section">
       <h2>Отзывы</h2>
-      <div class="reviews-list"></div>
+      <div class="reviews-list" id="reviews-list"></div>
       <form class="review-form">
         <h3>Оставить отзыв</h3>
         <div class="rating-input">
           <span>Оценка:</span>
-          <div class="stars-input"></div>
+          <div class="stars-input">
+            <span class="star" data-rating="1">☆</span>
+            <span class="star" data-rating="2">☆</span>
+            <span class="star" data-rating="3">☆</span>
+            <span class="star" data-rating="4">☆</span>
+            <span class="star" data-rating="5">☆</span>
+          </div>
         </div>
-        <textarea placeholder="Ваш отзыв..."></textarea>
-        <button type="submit">Отправить</button>
+        <textarea placeholder="Ваш отзыв..." required></textarea>
+        <button type="submit" class="btn submit-review">Отправить отзыв</button>
       </form>
     </div>
   </main>
 
+  <script src="js/storage.js"></script>
   <script src="js/product.js"></script>
 </body>
 </html>
