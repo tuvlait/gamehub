@@ -52,51 +52,5 @@
 
     <script src="js/storage.js"></script>
     <script src="js/main.js"></script>
-    <script>
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            // Обновление счетчика корзины
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            document.getElementById('cart-count').textContent = cart.length;
-            
-            // Загрузка популярных игр
-            const featuredContainer = document.getElementById('featured-games');
-            const featuredGames = window.games.filter(game => game.isTop || game.isNew).slice(0, 3);
-            
-            featuredContainer.innerHTML = featuredGames.map(game => `
-                <div class="game-card">
-                    ${game.isNew ? '<div class="game-badge new">Новинка</div>' : ''}
-                    ${game.isTop ? '<div class="game-badge top">Топ</div>' : ''}
-                    <img src="${game.image}" alt="${game.title}" loading="lazy">
-                    <div class="game-info">
-                        <h3>${game.title}</h3>
-                        <div class="game-meta">
-                            <span class="game-price">${game.price.toLocaleString()} ₽</span>
-                            <button class="btn" onclick="addToCart(${game.id})">В корзину</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        });
-
-        // Глобальная функция для добавления в корзину
-        window.addToCart = function(gameId) {
-            const game = window.games.find(g => g.id === gameId);
-            if (!game) return;
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            if (!cart.some(item => item.id === gameId)) {
-                cart.push(game);
-                localStorage.setItem('cart', JSON.stringify(cart));
-                alert(`${game.title} добавлен в корзину!`);
-                
-                // Обновляем счетчик
-                document.getElementById('cart-count').textContent = cart.length;
-            } else {
-                alert('Эта игра уже в корзине!');
-            }
-        };
-    </script>
 </body>
 </html>

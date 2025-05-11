@@ -13,7 +13,6 @@ function filterGames() {
     const genreFilter = document.getElementById('genre-filter');
     const platformFilter = document.getElementById('platform-filter');
     
-    // Синхронизация с URL
     genreFilter.value = params.genre;
     platformFilter.value = params.platform;
     
@@ -27,11 +26,11 @@ function filterGames() {
     renderGames(filtered);
 }
 
-// Рендер игр
+// Рендер игр с кликабельными карточками
 function renderGames(gamesToShow) {
     const container = document.getElementById('games-container');
     container.innerHTML = gamesToShow.map(game => `
-        <div class="game-card">
+        <div class="game-card" onclick="window.location.href='product.html?id=${game.id}'">
             ${game.isNew ? '<div class="game-badge new">Новинка</div>' : ''}
             ${game.isTop ? '<div class="game-badge top">Топ</div>' : ''}
             <img src="${game.image}" alt="${game.title}" loading="lazy">
@@ -39,7 +38,7 @@ function renderGames(gamesToShow) {
                 <h3>${game.title}</h3>
                 <div class="game-meta">
                     <span class="game-price">${game.price === 0 ? 'Бесплатно' : game.price.toLocaleString() + ' ₽'}</span>
-                    <button class="btn" onclick="addToCart(${game.id})">В корзину</button>
+                    <button class="btn" onclick="event.stopPropagation(); addToCart(${game.id})">В корзину</button>
                 </div>
             </div>
         </div>
@@ -56,7 +55,6 @@ function updateUrlParams(genre, platform) {
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', function() {
-    // Обработчики фильтров
     document.getElementById('genre-filter').addEventListener('change', function() {
         updateUrlParams(this.value, getUrlParams().platform);
         filterGames();
@@ -67,13 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
         filterGames();
     });
     
-    // Первоначальная загрузка
     filterGames();
     updateCartCount();
 });
 
 // Глобальные функции
-window.addToCart = function(gameId) {
+window.addToCart = function(gameId, event) {
+    if (event) event.stopPropagation();
     const game = window.games.find(g => g.id === gameId);
     if (!game) return;
 
