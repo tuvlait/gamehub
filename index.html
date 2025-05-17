@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAMEHUB | Главная</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <header>
         <div class="logo">GAMEHUB</div>
@@ -19,11 +21,20 @@
         </nav>
     </header>
 
+    <script>
+    if (window.location.pathname.endsWith('.xml') && !document.documentElement.nodeName === 'HTML') {
+        window.location.href = 'catalog.html';
+    }
+</script>
+
     <section class="hero">
         <div class="parallax-bg"></div>
         <div class="hero-content">
             <h1>Лучшие игры 2024</h1>
             <p>Откройте для себя новинки игровой индустрии</p>
+            <div class="hero-carousel">
+                <div class="hero-carousel-track" id="hero-carousel"></div>
+            </div>
         </div>
     </section>
 
@@ -50,7 +61,21 @@
         </div>
     </section>
 
+
+    <!-- Модальное окно результатов поиска -->
+    <div id="search-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-search">&times;</span>
+            <div id="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Контейнер для подсказок -->
+    <div id="search-suggestions" class="suggestions-container"></div>
+
+    <script src="js/search.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/main.js"></script>
 </body>
+
 </html>

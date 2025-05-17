@@ -343,16 +343,13 @@
     outline: 2px solid var(--accent);
   }
  
-  .hero {
+.hero {
     position: relative;
-    height: 400px;
+    height: auto; /* Убираем фиксированную высоту */
+    min-height: 400px;
+    padding-bottom: 50px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-bottom: 40px;
-  }
+}
   
   .parallax-bg {
     position: absolute;
@@ -367,16 +364,12 @@
     z-index: -1;
   }
   
-  .hero-content {
+.hero-content {
     position: relative;
-    z-index: 1;
-    color: white;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    max-width: 800px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-  }
+    z-index: 2;
+    padding: 40px 20px;
+    text-align: center;
+}
 
   .filter-options {
     display: flex;
@@ -1436,4 +1429,186 @@
 
 .submit-review:hover {
   background: var(--accent-hover);
+}
+
+/* Стили для модального окна поиска */
+#search-modal .modal-content {
+  max-width: 600px;
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+/* Контейнер подсказок */
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-radius: 0 0 8px 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  display: none;
+}
+
+/* Элемент подсказки */
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestion-item:hover {
+  background: rgba(110, 66, 229, 0.2);
+}
+
+/* Сообщение об ошибке */
+.search-error {
+  color: var(--error);
+  padding: 20px;
+  text-align: center;
+}
+
+/* Стили для карусели внутри героя */
+.hero-carousel {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-carousel-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: scrollHeroCarousel 30s linear infinite;
+    padding: 10px 0;
+}
+
+.hero-carousel-track:hover {
+    animation-play-state: paused;
+}
+
+.hero-game-card {
+    width: 180px;
+    background: rgba(26, 26, 46, 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s;
+    border: 1px solid rgba(110, 66, 229, 0.3);
+    flex-shrink: 0;
+}
+
+.hero-game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(110, 66, 229, 0.5);
+    border-color: var(--accent);
+}
+
+.hero-game-card img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+.hero-game-info {
+    padding: 10px;
+    text-align: center;
+}
+
+.hero-game-info h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hero-game-price {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Анимация прокрутки */
+@keyframes scrollHeroCarousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .hero-game-card {
+        width: 150px;
+    }
+    
+    .hero-game-card img {
+        height: 80px;
+    }
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+}
+
+/* Стили для бейджей в герое */
+.hero-game-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.hero-game-badge.new {
+    background: #4CAF50;
+}
+
+.hero-game-badge.top {
+    background: #FF5722;
+}
+
+.hero-game-card {
+    position: relative; /* Для позиционирования бейджей */
+    /* остальные стили остаются */
+}
+
+/* Специальные стили для XML-страниц */
+.xml-mode {
+    opacity: 1 !important;
+}
+
+.xml-mode .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+}
+
+.xml-mode .modal-content {
+    background: var(--bg-card);
+    padding: 20px;
+    margin: 50px auto;
+    max-width: 600px;
+    border-radius: 10px;
 }
